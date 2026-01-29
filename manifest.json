@@ -1,0 +1,18 @@
+{
+  "name": "Make 24 ゲーム",
+  "short_name": "Make 24",
+  "description": "4つの数字を使って24を作る計算パズルゲーム",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#667eea",
+  "theme_color": "#667eea",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

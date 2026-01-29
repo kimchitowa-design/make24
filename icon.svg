@@ -1,0 +1,13 @@
+<svg width="512" height="512" xmlns="http://www.w3.org/2000/svg">
+  <!-- 背景 -->
+  <rect width="512" height="512" fill="#667eea" rx="80"/>
+  
+  <!-- 白い円 -->
+  <circle cx="256" cy="256" r="180" fill="white" opacity="0.2"/>
+  
+  <!-- 24のテキスト -->
+  <text x="256" y="320" font-family="Arial, sans-serif" font-size="200" font-weight="bold" fill="white" text-anchor="middle">24</text>
+  
+  <!-- 上部の絵文字風装飾 -->
+  <text x="256" y="140" font-size="80" text-anchor="middle">🎯</text>
+</svg>

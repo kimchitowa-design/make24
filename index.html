@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="4つの数字を使って24を作る計算パズルゲーム">
+    <meta name="theme-color" content="#667eea">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Make 24">
+    <title>Make 24 ゲーム - 計算パズル</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700;800&display=swap"
+        rel="stylesheet">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/svg+xml" href="icon.svg">
+    <link rel="apple-touch-icon" href="icon.svg">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>🎯 Make 24</h1>
+            <!-- タイマー表示 -->
+            <div id="gameTimer" class="game-timer">
+                <span id="timerDisplay">00:00</span>
+            </div>
+        </header>
+
+        <div class="input-section">
+            <label for="answer">
+                4つの数字を使って24を作る計算パズルゲーム
+            </label>
+
+            <div id="feedback" class="feedback"></div>
+
+            <div class="input-with-buttons">
+                <span id="problemNumber" class="problem-number"></span>
+                <input type="text" id="answer" placeholder="例: 8 / (3 - 8/3)" autocomplete="off" readonly>
+            </div>
+
+            <div class="all-buttons-row">
+                <button class="calc-btn number-btn" data-value="">1</button>
+                <button class="calc-btn number-btn" data-value="">2</button>
+                <button class="calc-btn number-btn" data-value="">3</button>
+                <button class="calc-btn number-btn" data-value="">4</button>
+                <button class="calc-btn operator-btn" data-value="+">+</button>
+                <button class="calc-btn operator-btn" data-value="-">−</button>
+                <button class="calc-btn operator-btn" data-value="*">×</button>
+                <button class="calc-btn operator-btn" data-value="/">÷</button>
+                <button class="calc-btn operator-btn" data-value="(">(</button>
+                <button class="calc-btn operator-btn" data-value=")">)</button>
+            </div>
+            <div class="action-buttons-row">
+                <button class="calc-btn clear-btn" data-value="clear">AC</button>
+                <button class="calc-btn backspace-btn" data-value="backspace">CE</button>
+                <button id="submitBtn" class="submit-btn">=</button>
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <button id="resetBtn" class="btn-secondary"><span class="btn-icon">🔄</span>リセット</button>
+            <button id="solutionBtn" class="btn-secondary btn-giveup"><span class="btn-icon">🏳️</span>降参</button>
+            <button id="prevBtn" class="btn-secondary"><span class="btn-icon">⬅️</span>前の問題</button>
+            <button id="newGameBtn" class="btn-secondary"><span class="btn-icon">➡️</span>次の問題</button>
+        </div>
+
+        <div class="game-status">
+            <div class="game-info">
+                <div class="info-card">
+                    <span class="label">正解率</span>
+                    <span class="value" id="accuracy">0%</span>
+                </div>
+                <div class="info-card best-time-card">
+                    <button id="bestTimeBtn" class="btn-best-time">
+                        <span class="label">記録</span>
+                        <span class="value" id="bestTime">--:--</span>
+                    </button>
+                </div>
+                <div class="info-card grade-card">
+                    <button id="gradeBtn" class="btn-grade">
+                        <span class="btn-icon">📊</span>
+                        <span class="btn-text">採点</span>
+                    </button>
+                </div>
+                <div class="info-card level-card">
+                    <span class="label">レベル</span>
+                    <div class="level-select-wrapper">
+                        <select id="levelSelect" class="level-select">
+                            <option value="1">ふつう</option>
+                            <option value="2">難しい</option>
+                            <option value="3">鬼</option>
+                        </select>
+                        <span class="dropdown-arrow">▼</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> <!-- マスコットキャラクター（スマホのみ表示） -->
+    <div id="mascotContainer" class="mascot-container">
+        <div id="mascotCharacter" class="mascot-character">🦉</div>
+        <div id="speechBubble" class="speech-bubble">
+            <span id="mascotMessage">こんちは！24作ったろか！</span>
+        </div>
+    </div>
+    <!-- カスタム確認ダイアログ -->
+    <div id="customConfirmDialog" class="custom-dialog">
+        <div class="custom-dialog-content">
+            <p id="customConfirmMessage">採点しますか？</p>
+            <div id="recordClearOption" class="record-clear-option" style="display: none;">
+                <label>
+                    <input type="checkbox" id="clearRecordCheckbox">
+                    <span>ベストタイムもクリアする</span>
+                </label>
+            </div>
+            <div class="custom-dialog-buttons">
+                <button id="confirmYes" class="btn-confirm-yes">はい</button>
+                <button id="confirmNo" class="btn-confirm-no">いいえ</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 採点結果ダイアログ -->
+    <div id="gradingResultDialog" class="custom-dialog">
+        <div class="custom-dialog-content grading-result-content">
+            <canvas id="confettiCanvas" class="confetti-canvas"></canvas>
+            <p id="gradingResultMessage"></p>
+            <div class="custom-dialog-buttons">
+                <button id="gradingResultClose" class="btn-confirm-yes">閉じる</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ベストタイム詳細ダイアログ -->
+    <div id="bestTimeDialog" class="custom-dialog">
+        <div class="custom-dialog-content best-time-content">
+            <h2>🏆 ベストタイム記録</h2>
+            <div id="bestTimeDetails"></div>
+            <p class="best-time-note">※ 記録はリセットボタンからクリアできます</p>
+            <div class="custom-dialog-buttons">
+                <button id="bestTimeClose" class="btn-confirm-yes">閉じる</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="version-info">v0.8.0</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <script src="game.js"></script>
+</body>
+
+</html>
