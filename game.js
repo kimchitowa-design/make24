@@ -576,7 +576,7 @@ function handleMascotPoke(e) {
         message = msgs[Math.floor(Math.random() * msgs.length)];
         style = 'mascot-worried';
     } else if (gameState.mascotPokeCount === 50) {
-        const msgs = ['……（無言の圧力）', 'もう何も言わへんで。', '（スルー決定）', '……。'];
+        const msgs = ['・・・・・・・', 'もう何も言わへんで。', '（スルー決定）', '……。'];
         message = msgs[Math.floor(Math.random() * msgs.length)];
         style = 'mascot-thinking';
     } else {
